@@ -1,2 +1,40 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+    import { onMount, afterUpdate } from "svelte";
+    interface Faculty {
+        department: string;
+        rank: string;
+        retirementTrack: string;
+        foreigner: string;
+    }
+
+    let facultyList: Faculty[] = [];
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+    onMount(async () => {
+        const response = await fetch(`${apiBaseUrl}/faculty`);
+        if (!response.ok) {
+            throw new Error("Failed to fetch data");
+        }
+
+        const data: {
+            department: string;
+            rank: string;
+            retirementTrack: string;
+            foreigner: string;
+        }[] = await response.json();
+
+        // 데이터 추출 및 변환
+        facultyList = data.map((d) => ({
+            department: d.department,
+            rank: d.rank,
+            retirementTrack: d.retirementTrack,
+            foreigner: d.foreigner,
+        }));
+        console.log(facultyList);
+        
+    });
+</script>
+{#each facultyList as item}
+	<li>
+		Date: {item.department} - Close: {item.rank}
+	</li>
+{/each}
