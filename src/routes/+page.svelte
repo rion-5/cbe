@@ -8,6 +8,7 @@
     }
 
     let facultyList: Faculty[] = [];
+    let tenureTrackFaculty: Faculty[]  = [];
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     onMount(async () => {
         const response = await fetch(`${apiBaseUrl}/faculty`);
@@ -30,11 +31,14 @@
             foreigner: d.foreigner,
         }));
         console.log(facultyList);
+        tenureTrackFaculty = data.filter(faculty => faculty.retirementTrack === "정년트랙");
+
+        console.log(tenureTrackFaculty);
         
     });
 </script>
 {#each facultyList as item}
 	<li>
-		Date: {item.department} - Close: {item.rank}
+		학과: {item.department}  직급: {item.rank} 정년트랙: {item.retirementTrack}
 	</li>
 {/each}
