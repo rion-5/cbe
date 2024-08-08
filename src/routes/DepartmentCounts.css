@@ -1,9 +1,9 @@
 .bar {
-    fill: steelblue;
+    fill: sienna;
 }
 
 .bar:hover {
-    fill: orange;
+    fill: darkkhaki;
 }
 
 .x-axis path, .x-axis line,

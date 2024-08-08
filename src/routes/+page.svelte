@@ -61,14 +61,24 @@
         console.log(JSON.stringify(departmentCounts, null, 2));
     });
 </script>
+<div class="container">
+	<h1>경상대 교원현황</h1>
+	<div class="row">
+		<div class="col col-9">
+			<h2>학부(과)별 전임교원수</h2>
+			<div class="responsive-svg-container">
+				<DepartmentCounts {departmentCounts} />
+			</div>
+		</div>
+	</div>
+</div>
 
-<DepartmentCounts {departmentCounts} />
 
-{#each departmentCounts as item}
+<!-- {#each departmentCounts as item}
     <li>
         학과: {item.department} 교원수: {item.count}
     </li>
-{/each}
+{/each} -->
 
 
 <!-- {#each facultyList as item}
