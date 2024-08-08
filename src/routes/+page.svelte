@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { onMount, afterUpdate } from "svelte";
+    import { onMount } from "svelte";
+    import DepartmentCounts from "./DepartmentCounts.svelte";
     interface Faculty {
         department: string;
         rank: string;
@@ -61,12 +62,14 @@
     });
 </script>
 
+<DepartmentCounts {departmentCounts} />
 
 {#each departmentCounts as item}
     <li>
         학과: {item.department} 교원수: {item.count}
     </li>
 {/each}
+
 
 <!-- {#each facultyList as item}
     <li>
