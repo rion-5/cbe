@@ -1,8 +1,7 @@
-<!-- src/lib/DepartmentCounts.svelte -->
 <script lang='ts'>
     import { onMount, afterUpdate } from 'svelte';
     import * as d3 from 'd3';
-    import './DepartmentCounts.css';
+    import './DepartmentCountsBarChart.css';
 
     export let departmentCounts: { department: string, count: number }[];
 

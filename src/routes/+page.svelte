@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import DepartmentCounts from "./DepartmentCounts.svelte";
+    import DepartmentCountsBarChart from "./DepartmentCountsBarChart.svelte";
     interface Faculty {
         department: string;
         rank: string;
@@ -13,9 +13,18 @@
         count: number;
     }
 
+    interface ProfessorRank {
+        rank: string;
+        count: number;
+    }
+
     let facultyList: Faculty[] = [];
     let tenureTrackFaculty: Faculty[] = [];
     let departmentCounts: DepartmentCounts[] = [];
+
+    let rankEconomics: ProfessorRank[] = [];
+    let rankBusiness: ProfessorRank[] = [];
+    let rankActuarial: ProfessorRank[] = [];
 
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     onMount(async () => {
@@ -58,7 +67,11 @@
                 [] as DepartmentCounts[],
             );
 
-        console.log(JSON.stringify(departmentCounts, null, 2));
+        //console.log(JSON.stringify(departmentCounts, null, 2));
+
+        rankEconomics = data.filter((faculty) => faculty.(retirementTrack ==="정년트랙"
+        &&department === "경제학부"));
+
     });
 </script>
 <div class="container">
@@ -67,7 +80,7 @@
 		<div class="col col-9">
 			<h2>학부(과)별 전임교원수</h2>
 			<div class="responsive-svg-container">
-				<DepartmentCounts {departmentCounts} />
+				<DepartmentCountsBarChart {departmentCounts} />
 			</div>
 		</div>
 	</div>
