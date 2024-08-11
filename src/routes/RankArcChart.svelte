@@ -2,23 +2,39 @@
     import { onMount, afterUpdate } from "svelte";
     import * as d3 from "d3";
     import "./DepartmentCountsBarChart.css";
+    
+    interface ProfessorRank {
+        rank: string;
+        count: number;
+    }
+    export let rankEconomics: ProfessorRank[];
 
-    export let rankEconomics: { rank: string; count: number }[];
-    // export let rankBusiness: { rank: string; count: number }[];
     onMount(() => {
         drawArc();
     });
     afterUpdate(() => {
         drawArc();
     });
+
     function drawArc() {
         const pieChartWidth = 300;
         const pieChartHeight = 300;
+
+        // Clear previous chart
+        d3.select('#arc').selectAll('*').remove();
+
+        // Generate pie data
+        const pieGenerator = d3.pie<ProfessorRank>()
+            .value(d => d.count);
+        const annotatedData = pieGenerator(rankEconomics);
+
+        // Create the SVG element
         const svg = d3
             .select("#arc")
             .append("svg")
-            .attr("viewBox", [0, 0, pieChartWidth, pieChartHeight]);
+            .attr("viewBox", `0 0 ${pieChartWidth} ${pieChartHeight}`);
 
+        // Create a group to center the pie chart
         const innerChart = svg
             .append("g")
             .attr(
@@ -26,70 +42,48 @@
                 `translate(${pieChartWidth / 2}, ${pieChartHeight / 2})`,
             );
 
-        const numberOfDays = rankEconomics.length;
-        const numberOfDaysWithPrecipitations = rankEconomics.filter(
-            (d) => d.count > 0,
-        ).length;
-        const percentageDaysWithPrecipitations = Math.round(
-            (numberOfDaysWithPrecipitations / numberOfDays) * 100,
-        );
-
-        const angleDaysWithPrecipitations_deg =
-            (percentageDaysWithPrecipitations * 360) / 100;
-        const angleDaysWithPrecipitations_rad =
-            (angleDaysWithPrecipitations_deg * Math.PI) / 180;
-
-        const arcGenerator = d3
-            .arc()
-            .innerRadius(80)
-            .outerRadius(120)
+        // Define arc generator
+        const arcGenerator = d3.arc<d3.PieArcDatum<ProfessorRank>>()
+            .innerRadius(60)
+            .outerRadius(100)
             .padAngle(0.02)
-            .cornerRadius(6);
+            .cornerRadius(3);
 
+        // Bind data and create arcs
         innerChart
-            .append("path")
-            .attr(
-                "d",
-                arcGenerator({
-                    innerRadius: 80,
-                    outerRadius: 120,
-                    startAngle: 0,
-                    endAngle: angleDaysWithPrecipitations_rad,
-                }),
-            )
-            .attr("fill", "#6EB7C2");
+            .selectAll('path')
+            .data(annotatedData)
+            .enter()
+            .append('path')
+            .attr('d', arcGenerator)
+            .attr('fill', (d, i) => d3.schemeTableau10[i]);
 
+        // Add text labels to arcs
         innerChart
-            .append("path")
-            .attr(
-                "d",
-                arcGenerator({
-                    innerRadius: 80,
-                    outerRadius: 120,
-                    startAngle: angleDaysWithPrecipitations_rad,
-                    endAngle: 2 * Math.PI,
-                }),
-            )
-            .attr("fill", "#DCE2E2");
-
-        const centroid = arcGenerator.centroid({
-            innerRadius: 80,
-            outerRadius: 120,
-            startAngle: 0,
-            endAngle: angleDaysWithPrecipitations_rad,
-        });
-
-        innerChart
-            .append("text")
-            .text((d) =>
-                d3.format(".0%")(percentageDaysWithPrecipitations / 100),
-            )
-            .attr("x", centroid[0])
-            .attr("y", centroid[1])
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("fill", "white")
-            .style("font-weight", 500);
+            .selectAll('text')
+            .data(annotatedData)
+            .enter()
+            .append('text')
+            .attr('x', d => arcGenerator.centroid(d)[0])
+            .attr('y', d => arcGenerator.centroid(d)[1])
+            .attr('text-anchor', 'middle')
+            .attr('dominant-baseline', 'middle')
+            .attr('fill', 'white')
+            .style('font-weight', 500)
+            .style('font-size', '9px')
+            .each(function(d) {
+                const text = d3.select(this);
+                // Append rank text
+                text.append('tspan')
+                    .text(d.data.rank)
+                    .attr('x', arcGenerator.centroid(d)[0])
+                    .attr('dy', 0); // Position at the initial location
+                // Append percentage text
+                text.append('tspan')
+                    .text(d3.format(".1%")(d.data.count / d3.sum(rankEconomics, d => d.count)))
+                    .attr('x', arcGenerator.centroid(d)[0])
+                    .attr('dy', '1.2em'); // Move the percentage below the rank
+            });
     }
 </script>
 
