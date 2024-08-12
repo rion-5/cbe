@@ -17,8 +17,8 @@
     });
 
     function drawArc() {
-        const pieChartWidth = 300;
-        const pieChartHeight = 300;
+        const pieChartWidth = 200;
+        const pieChartHeight = 200;
 
         // Clear previous chart
         d3.select('#arc').selectAll('*').remove();
@@ -69,8 +69,8 @@
             .attr('text-anchor', 'middle')
             .attr('dominant-baseline', 'middle')
             .attr('fill', 'white')
-            .style('font-weight', 500)
-            .style('font-size', '9px')
+            .style('font-weight', 1000)
+            .style('font-size', '10px')
             .each(function(d) {
                 const text = d3.select(this);
                 // Append rank text
@@ -87,4 +87,4 @@
     }
 </script>
 
-<div id="arc" style="width: 400px; height: 400px;"></div>
+<div id="arc" style="width: 200px; height: 200px;"></div>
