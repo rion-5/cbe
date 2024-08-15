@@ -1,7 +1,6 @@
 <script lang="ts">
     import { onMount, afterUpdate } from "svelte";
     import * as d3 from "d3";
-    import './DepartmentRankArcChart.css';
     interface ProfessorRank {
         rank: string;
         count: number;
@@ -12,7 +11,7 @@
         rankData: ProfessorRank[];
     }
 
-    export let departmentRank: DepartmentRank[];
+    export let departmentRank: DepartmentRank[] = [];
 
     onMount(() => {
         drawAllArcs();
@@ -21,16 +20,19 @@
 
     afterUpdate(() => {
         drawAllArcs();
-
     });
 
     function drawAllArcs() {
         departmentRank.forEach((dept, index) => {
-            drawArc(`#arc-${index}`, dept.rankData,  dept.department);
+            drawArc(`#arc-${index}`, dept.rankData, dept.department);
         });
     }
 
-    function drawArc(selector: string, rankData: ProfessorRank[], department: string) {
+    function drawArc(
+        selector: string,
+        rankData: ProfessorRank[],
+        department: string,
+    ) {
         const container = d3.select(selector);
         const element = container.node() as Element; // Assert that node is an Element
         const containerWidth = element?.getBoundingClientRect().width || 200;
@@ -39,7 +41,6 @@
 
         // Clear previous chart
         container.selectAll("*").remove();
-        //d3.select('.grid-container').selectAll('*').remove();
 
         // Generate pie data
         const pieGenerator = d3.pie<ProfessorRank>().value((d) => d.count);
@@ -74,7 +75,7 @@
             .append("path")
             .attr("d", arcGenerator)
             .attr("fill", (d, i) => d3.schemeTableau10[i]);
- 
+
         // Add text labels to arcs
         innerChart
             .selectAll("text")
@@ -105,15 +106,15 @@
                     .attr("x", arcGenerator.centroid(d)[0])
                     .attr("dy", "1.2em"); // Move the percentage below the rank
             });
-    // Add department name in the center of the chart
-    innerChart
-        .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('dominant-baseline', 'middle')
-        .attr('fill', 'black')
-        .style('font-weight', 'bold')
-        .style('font-size', `${pieChartWidth / 12}px`)
-        .text(department);
+        // Add department name in the center of the chart
+        innerChart
+            .append("text")
+            .attr("text-anchor", "middle")
+            .attr("dominant-baseline", "middle")
+            .attr("fill", "black")
+            .style("font-weight", "bold")
+            .style("font-size", `${pieChartWidth / 12}px`)
+            .text(department);
     }
 </script>
 
@@ -125,3 +126,32 @@
     {/each}
 </div>
 
+<style>
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .arc-container {
+        width: 100%;
+        height: 0;
+        padding-bottom: 100%; /* Maintain a square aspect ratio */
+        position: relative;
+    }
+
+    .arc-container > div {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    @media (max-width: 600px) {
+        .grid-container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
