@@ -98,31 +98,35 @@
                 }
                 return acc;
             }, [] as ProfessorRank[]);
-
-        data.filter((item) => item.retirementTrack === "정년트랙").forEach(
-            (item) => {
-                let department = departmentRank.find(
-                    (dept) => dept.department === item.department,
+        departmentRank = data
+            .filter((item) => item.retirementTrack === "정년트랙")
+            .reduce((acc: DepartmentRank[], faculty) => {
+                let department = acc.find(
+                    (dept) => dept.department === faculty.department,
                 );
 
                 if (!department) {
-                    department = { department: item.department, rankData: [] };
-                    departmentRank.push(department);
+                    department = {
+                        department: faculty.department,
+                        rankData: [],
+                    };
+                    acc.push(department);
                 }
 
                 let rankData = department.rankData.find(
-                    (rank) => rank.rank === item.rank,
+                    (rank) => rank.rank === faculty.rank,
                 );
 
                 if (!rankData) {
-                    rankData = { rank: item.rank, count: 0 };
+                    rankData = { rank: faculty.rank, count: 0 };
                     department.rankData.push(rankData);
                 }
 
                 rankData.count++;
-            },
-        );
-        console.log(JSON.stringify(departmentRank, null, 2));
+                return acc;
+            }, []);
+    //    console.log(JSON.stringify(departmentRank, null, 2));
+         
     });
 </script>
 
@@ -135,12 +139,12 @@
                 <DepartmentCountsBarChart {departmentCounts} />
             </div>
         </div>
-        <div>
+<!--         <div>
             <h2>경제학부</h2>
             <div class="responsive-svg-container">
                 <RankArcChart {rankEconomics} />
             </div>
-        </div>
+        </div> -->
         <div>
             <h2>학부별 교원구성</h2>
             <div class="responsive-svg-container">
@@ -150,8 +154,8 @@
     </div>
 </div>
 
-{#each departmentRank as item}
+<!-- {#each departmentRank as item}
     <li>
-        학과: {item.department} 직급: {item.rankData}
+        학과: {item.department} 
     </li>
-{/each}
+{/each} -->
