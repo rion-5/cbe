@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount, afterUpdate } from "svelte";
     import * as d3 from "d3";
-
+    import './DepartmentRankArcChart.css';
     interface ProfessorRank {
         rank: string;
         count: number;
@@ -12,7 +12,7 @@
         rankData: ProfessorRank[];
     }
 
-    export let departmentRank: DepartmentRank[] = [];
+    export let departmentRank: DepartmentRank[];
 
     onMount(() => {
         drawAllArcs();
@@ -39,6 +39,7 @@
 
         // Clear previous chart
         container.selectAll("*").remove();
+        //d3.select('.grid-container').selectAll('*').remove();
 
         // Generate pie data
         const pieGenerator = d3.pie<ProfessorRank>().value((d) => d.count);
@@ -124,32 +125,3 @@
     {/each}
 </div>
 
-<style>
-    .grid-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
-        padding: 20px;
-    }
-
-    .arc-container {
-        width: 100%;
-        height: 0;
-        padding-bottom: 100%; /* Maintain a square aspect ratio */
-        position: relative;
-    }
-
-    .arc-container > div {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    @media (max-width: 600px) {
-        .grid-container {
-            grid-template-columns: 1fr;
-        }
-    }
-</style>

@@ -142,35 +142,16 @@
             </div>
         </div>
         <div>
-			<h2>학부별 교원구성</h2>
-			<div class="responsive-svg-container">
-				<DepartmentRankArcChart {departmentRank} />
-			</div>
-		</div>
-
-        <!--    <div class="col col-3">
-			<h2>보험계리학과</h2>
-			<div class="responsive-svg-container">
-				<RankArcChart {rankActuarial} />
-			</div>
-		</div>
-        <div class="col col-3">
-			<h2>회계세무학과</h2>
-			<div class="responsive-svg-container">
-				<RankArcChart {rankAccounting} />
-			</div>
-		</div> -->
+            <h2>학부별 교원구성</h2>
+            <div class="responsive-svg-container">
+                <DepartmentRankArcChart {departmentRank} />
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- {#each departmentCounts as item}
+{#each departmentRank as item}
     <li>
-        학과: {item.department} 교원수: {item.count}
+        학과: {item.department} 직급: {item.rankData}
     </li>
-{/each} -->
-
-<!-- {#each facultyList as item}
-    <li>
-        학과: {item.department} 직급: {item.rank} 정년트랙: {item.retirementTrack}
-    </li>
-{/each} -->
+{/each}
