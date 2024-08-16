@@ -15,13 +15,13 @@
         department: string;
         count: number;
     }
-    interface ProfessorRank {
+    interface RankData {
         rank: string;
         count: number;
     }
     interface DepartmentRank {
         department: string;
-        rankData: ProfessorRank[];
+        rankData: RankData[];
         // rankData: { rank: string; count: number }[];
     }
 
@@ -34,7 +34,7 @@
     let tenureTrackFaculty: Faculty[] = [];
     let departmentCounts: DepartmentCounts[] = [];
 
-    let rankEconomics: ProfessorRank[] = [];
+    let rankEconomics: RankData[] = [];
 
     let departmentRank: DepartmentRank[] = [];
 
@@ -52,6 +52,8 @@
         //spring-root 에서 가져옴
         // const response = await fetch(`${apiBaseUrl}/faculty`);
 
+
+        //SvelteKit API endpoint 사용 http://localhost:3000/api/faculty
         const response = await fetch("/api/faculty");
 
         if (!response.ok) {
@@ -112,7 +114,7 @@
                     acc.push({ rank: faculty.rank, count: 1 });
                 }
                 return acc;
-            }, [] as ProfessorRank[]);
+            }, [] as RankData[]);
         departmentRank = data
             .filter((item) => item.retirementTrack === "정년트랙")
             .reduce((acc: DepartmentRank[], faculty) => {
@@ -141,6 +143,8 @@
                 return acc;
             }, []);
         //    console.log(JSON.stringify(departmentRank, null, 2));
+
+
     });
 </script>
 

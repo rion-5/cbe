@@ -1,14 +1,14 @@
 <script lang="ts">
     import { onMount, afterUpdate } from "svelte";
     import * as d3 from "d3";
-    interface ProfessorRank {
+    interface RankData {
         rank: string;
         count: number;
     }
 
     interface DepartmentRank {
         department: string;
-        rankData: ProfessorRank[];
+        rankData: RankData[];
     }
 
     export let departmentRank: DepartmentRank[] = [];
@@ -30,7 +30,7 @@
 
     function drawArc(
         selector: string,
-        rankData: ProfessorRank[],
+        rankData: RankData[],
         department: string,
     ) {
         const container = d3.select(selector);
@@ -43,7 +43,7 @@
         container.selectAll("*").remove();
 
         // Generate pie data
-        const pieGenerator = d3.pie<ProfessorRank>().value((d) => d.count);
+        const pieGenerator = d3.pie<RankData>().value((d) => d.count);
         const annotatedData = pieGenerator(rankData);
 
         // Create the SVG element
@@ -61,7 +61,7 @@
 
         // Define arc generator
         const arcGenerator = d3
-            .arc<d3.PieArcDatum<ProfessorRank>>()
+            .arc<d3.PieArcDatum<RankData>>()
             .innerRadius(pieChartWidth / 4)
             .outerRadius(pieChartWidth / 2)
             .padAngle(0.02)

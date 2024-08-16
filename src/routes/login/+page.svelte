@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { auth } from '../../stores/auth';
-	import { login } from '../../lib/api/login';
-	import type { LoginParam } from '../../lib/types/LoginParam';
+	import { login } from '$lib/api/login';
+	import type { LoginParam } from '$lib/types/LoginParam';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 

@@ -19,6 +19,6 @@ export const GET = async () => {
         foreigner: item.foreigner
     }));
     
-    console.log(JSON.stringify(formattedFaculty, null, 2));
+    // console.log(JSON.stringify(formattedFaculty, null, 2));
     return new Response(JSON.stringify(formattedFaculty), { status: 200 });
 };
