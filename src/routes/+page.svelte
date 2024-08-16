@@ -39,8 +39,21 @@
     let departmentRank: DepartmentRank[] = [];
 
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+
+    // async function getFaculty() {
+    //     const response = await fetch("/api/faculty");
+    //     const data = await response.json();
+    //     console.log(JSON.stringify(data, null, 2));
+    // }
+
+
+
     onMount(async () => {
-        const response = await fetch(`${apiBaseUrl}/faculty`);
+        //spring-root 에서 가져옴
+        // const response = await fetch(`${apiBaseUrl}/faculty`);
+
+        const response = await fetch("/api/faculty");
+
         if (!response.ok) {
             throw new Error("Failed to fetch data");
         }
@@ -60,6 +73,8 @@
             foreigner: d.foreigner,
         }));
         // console.log(JSON.stringify(facultyList, null, 2));
+
+
 
         tenureTrackFaculty = data.filter(
             (faculty) => faculty.retirementTrack === "정년트랙",
@@ -125,8 +140,7 @@
                 rankData.count++;
                 return acc;
             }, []);
-    //    console.log(JSON.stringify(departmentRank, null, 2));
-         
+        //    console.log(JSON.stringify(departmentRank, null, 2));
     });
 </script>
 
@@ -139,7 +153,7 @@
                 <DepartmentCountsBarChart {departmentCounts} />
             </div>
         </div>
-<!--         <div>
+        <!--         <div>
             <h2>경제학부</h2>
             <div class="responsive-svg-container">
                 <RankArcChart {rankEconomics} />
