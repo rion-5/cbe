@@ -1,7 +1,7 @@
 <script lang='ts'>
     import { onMount, afterUpdate } from 'svelte';
     import * as d3 from 'd3';
-    import './DepartmentCountsBarChart.css';
+    // import './DepartmentCountsBarChart.css';
 
     export let departmentCounts: { department: string, count: number }[];
 
@@ -84,4 +84,5 @@
     }
 </script>
 
-<div id='bar-chart' style='width: 100%; height: 400px;'></div>
+<!-- <div id='bar-chart' style='width: 100%; height: 400px;'></div> -->
+<div id='bar-chart'></div>

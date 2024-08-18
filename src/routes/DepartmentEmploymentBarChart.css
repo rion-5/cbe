@@ -1,0 +1,25 @@
+.bar-chart-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+}
+
+.bar-chart {
+  margin-bottom: 40px;
+}
+
+h3 {
+  font-size: 1.2em;
+  margin: 0;
+}
+
+svg {
+  width: auto;
+  height: auto;
+}
+
+@media (min-width: 600px) {
+  .bar-chart-container {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
