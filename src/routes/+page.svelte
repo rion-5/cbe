@@ -3,12 +3,13 @@
     import DepartmentCountsBarChart from "./DepartmentCountsBarChart.svelte";
     import RankArcChart from "./RankArcChart.svelte";
     import DepartmentRankArcChart from "./DepartmentRankArcChart.svelte";
-    import DepartmentEmploymentBarChart from "./DepartmentEmploymentBarChart.svelte";
+    import DepartmentPositionBarChart from "./DepartmentPositionBarChart.svelte";
 
     interface Faculty {
         department: string;
         rank: string;
         position: string;
+        employmentType: string;
         retirementTrack: string;
         foreigner: string;
     }
@@ -27,13 +28,13 @@
         // rankData: { rank: string; count: number }[];
     }
 
-    interface DepartmentEmployment{
+    interface DepartmentPosition{
         department: string;
-        employmentData: EmploymentData[];
-        // employmentData: { position:string; count:number}[];
+        positionData: positionData[];
+        // positionData: { position:string; count:number}[];
     }
 
-    interface EmploymentData {
+    interface positionData {
         position: string;
         count: number;
     }
@@ -51,7 +52,7 @@
 
     let departmentRank: DepartmentRank[] = [];
 
-    let departmentEmployment: DepartmentEmployment[] = [];
+    let departmentPosition: DepartmentPosition[] = [];
 
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
@@ -79,6 +80,7 @@
             department: string;
             rank: string;
             position: string;
+            employmentType: string,
             retirementTrack: string;
             foreigner: string;
         }[] = await response.json();
@@ -88,6 +90,7 @@
             department: d.department,
             rank: d.rank,
             position: d.position,
+            employmentType: d.employmentType,
             retirementTrack: d.retirementTrack,
             foreigner: d.foreigner,
         }));
@@ -100,7 +103,7 @@
         );
 
         departmentCounts = data
-            .filter((faculty) => faculty.retirementTrack === "정년트랙") // 필터링
+            .filter((faculty) => faculty.employmentType === "전임교원") // 필터링
             .reduce((acc, faculty) => {
                 const existingDepartment = acc.find(
                     (item) => item.department === faculty.department,
@@ -118,7 +121,7 @@
         rankEconomics = data
             .filter(
                 (faculty) =>
-                    faculty.retirementTrack === "정년트랙" &&
+                    faculty.employmentType === "전임교원" &&
                     faculty.department === "경제학부",
             )
             .reduce((acc, faculty) => {
@@ -133,7 +136,7 @@
                 return acc;
             }, [] as RankData[]);
         departmentRank = data
-            .filter((item) => item.retirementTrack === "정년트랙")
+            .filter((item) => item.employmentType === "전임교원")
             .reduce((acc: DepartmentRank[], faculty) => {
                 let department = acc.find(
                     (dept) => dept.department === faculty.department,
@@ -161,9 +164,9 @@
             }, []);
         //    console.log(JSON.stringify(departmentRank, null, 2));
         
-        departmentEmployment = data
-            .filter((item) => item.position !== "장학조교")
-            .reduce((acc: DepartmentEmployment[], faculty) => {
+        departmentPosition = data
+            .filter((item) => item.position !== "장학조교" && item.department !== "경상대학")
+            .reduce((acc: DepartmentPosition[], faculty) => {
                 let department = acc.find(
                     (dept) => dept.department === faculty.department,
                 );
@@ -171,24 +174,24 @@
                 if (!department) {
                     department = {
                         department: faculty.department,
-                        employmentData: [],
+                        positionData: [],
                     };
                     acc.push(department);
                 }
 
-                let employmentData = department.employmentData.find(
+                let positionData = department.positionData.find(
                     (d) => d.position === faculty.position,
                 );
 
-                if (!employmentData) {
-                    employmentData = { position: faculty.position, count: 0 };
-                    department.employmentData.push(employmentData);
+                if (!positionData) {
+                    positionData = { position: faculty.position, count: 0 };
+                    department.positionData.push(positionData);
                 }
 
-                employmentData.count++;
+                positionData.count++;
                 return acc;
             }, []);
-           console.log(JSON.stringify(departmentEmployment, null, 2));
+           console.log(JSON.stringify(departmentPosition, null, 2));
         
 
     });
@@ -212,7 +215,7 @@
         <div>
             <h2>학부별 교원구성</h2>
             <div class="responsive-svg-container">
-                <DepartmentEmploymentBarChart {departmentEmployment} />
+                <DepartmentPositionBarChart {departmentPosition} />
             </div>
         </div>
         <div>

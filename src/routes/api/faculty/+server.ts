@@ -6,6 +6,7 @@ export const GET = async () => {
             CASE WHEN 학과 = '' THEN '경상대학' ELSE 학과 END AS department,
             직급 AS rank,
             직종 AS position,
+            전임구분 AS employmenttype,
             정년트랙구분 AS retirementtrack,
             외국인여부 AS foreigner
         FROM 교원조회및인사카드출력
@@ -17,6 +18,7 @@ export const GET = async () => {
         department: item.department,
         rank: item.rank,
         position: item.position,
+        employmentType: item.employmenttype,
         retirementTrack: item.retirementtrack,
         foreigner: item.foreigner
     }));

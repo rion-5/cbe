@@ -2,17 +2,17 @@
   import { onMount, afterUpdate } from "svelte";
   import * as d3 from "d3";
 
-  interface EmploymentData {
+  interface PositionData {
       position: string;
       count: number;
   }
 
-  interface DepartmentEmployment {
+  interface DepartmentPosition {
       department: string;
-      employmentData: EmploymentData[];
+      positionData: PositionData[];
   }
 
-  export let departmentEmployment: DepartmentEmployment[] = [];
+  export let departmentPosition: DepartmentPosition[] = [];
   let maxY: number;
   
   onMount(() => {
@@ -25,16 +25,16 @@
   });
 
   function drawAllCharts() {
-    maxY = d3.max(departmentEmployment.flatMap(dept => dept.employmentData.map(d => d.count))) || 0;
+    maxY = d3.max(departmentPosition.flatMap(dept => dept.positionData.map(d => d.count))) || 0;
 
-    departmentEmployment.forEach((dept, index) => {
-            drawBarChart(`#chart-${index}`, dept.employmentData, dept.department, index);
+    departmentPosition.forEach((dept, index) => {
+            drawBarChart(`#chart-${index}`, dept.positionData, dept.department, index);
         });
     }
 
     function drawBarChart(
         selector: string,
-        employmentData: EmploymentData[],
+        PositionData: PositionData[],
         department: string,
         deptIndex: number,  // 추가된 인덱스 파라미터
     ) {
@@ -58,7 +58,7 @@
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
         const x = d3.scaleBand()
-            .domain(employmentData.map(d => d.position))
+            .domain(PositionData.map(d => d.position))
             .range([0, width])
             .padding(0.2);
 
@@ -78,7 +78,7 @@
             .call(d3.axisLeft(y));
 
         svg.selectAll(".bar")
-            .data(employmentData)
+            .data(PositionData)
             .enter()
             .append("rect")
             .attr("class", "bar")
@@ -90,7 +90,7 @@
 
 
             svg.selectAll('.label')
-            .data(employmentData)
+            .data(PositionData)
             .enter().append('text')
             .text(d => d.count)
             .attr('x', d => x(d.position)! + x.bandwidth() /2)
@@ -109,7 +109,7 @@
 </script>
 
 <div class="grid-container">
-    {#each departmentEmployment as dept, index}
+    {#each departmentPosition as dept, index}
         <div class="chart-container">
             <div id={"chart-" + index}></div>
         </div>
