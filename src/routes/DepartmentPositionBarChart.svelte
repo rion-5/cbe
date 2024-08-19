@@ -1,43 +1,55 @@
 <script lang="ts">
-  import { onMount, afterUpdate } from "svelte";
-  import * as d3 from "d3";
+    import { onMount, afterUpdate } from "svelte";
+    import * as d3 from "d3";
 
-  interface PositionData {
-      position: string;
-      count: number;
-  }
+    interface PositionData {
+        position: string;
+        count: number;
+    }
 
-  interface DepartmentPosition {
-      department: string;
-      positionData: PositionData[];
-  }
+    interface DepartmentPosition {
+        department: string;
+        positionData: PositionData[];
+    }
 
-  export let departmentPosition: DepartmentPosition[] = [];
-  let maxY: number;
-  
-  onMount(() => {
-      drawAllCharts();
-      window.addEventListener("resize", drawAllCharts);
-  });
+    export let departmentPosition: DepartmentPosition[] = [];
+    let maxY: number;
 
-  afterUpdate(() => {
-      drawAllCharts();
-  });
+    onMount(() => {
+        drawAllCharts();
+        window.addEventListener("resize", drawAllCharts);
+    });
 
-  function drawAllCharts() {
-    maxY = d3.max(departmentPosition.flatMap(dept => dept.positionData.map(d => d.count))) || 0;
+    afterUpdate(() => {
+        drawAllCharts();
+    });
 
-    departmentPosition.forEach((dept, index) => {
-            drawBarChart(`#chart-${index}`, dept.positionData, dept.department, index);
+    function drawAllCharts() {
+        maxY =
+            d3.max(
+                departmentPosition.flatMap((dept) =>
+                    dept.positionData.map((d) => d.count),
+                ),
+            ) || 0;
+
+        departmentPosition.forEach((dept, index) => {
+            drawBarChart(
+                `#chart-${index}`,
+                dept.positionData,
+                dept.department,
+                index,
+            );
         });
     }
 
     function drawBarChart(
         selector: string,
-        PositionData: PositionData[],
+        positionData: PositionData[],
         department: string,
-        deptIndex: number,  // 추가된 인덱스 파라미터
+        deptIndex: number, // 추가된 인덱스 파라미터
     ) {
+        // 각 department의 count 합계를 계산
+        const totalCount = d3.sum(positionData, (d) => d.count);
         const container = d3.select(selector);
         const element = container.node() as Element;
         const containerWidth = element?.getBoundingClientRect().width || 200;
@@ -57,54 +69,68 @@
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        const x = d3.scaleBand()
-            .domain(PositionData.map(d => d.position))
+        const x = d3
+            .scaleBand()
+            .domain(positionData.map((d) => d.position))
             .range([0, width])
             .padding(0.2);
 
-        const y = d3.scaleLinear()
-            .domain([0, maxY])
-            .nice()
-            .range([height, 0]);
+        const y = d3.scaleLinear().domain([0, maxY]).nice().range([height, 0]);
 
         svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x))
             .selectAll("text")
-            .attr("transform", "rotate(-45)")
+            .attr("transform", "rotate(-25)")
             .style("text-anchor", "end");
+            // .style("text-anchor", "middle");
 
-        svg.append("g")
-            .call(d3.axisLeft(y));
+        // svg.append("g")
+        //     .call(d3.axisLeft(y));
 
         svg.selectAll(".bar")
-            .data(PositionData)
+            .data(positionData)
             .enter()
             .append("rect")
             .attr("class", "bar")
-            .attr("x", d => x(d.position)!)
-            .attr("y", d => y(d.count))
+            .attr("x", (d) => x(d.position)!)
+            .attr("y", (d) => y(d.count))
             .attr("width", x.bandwidth())
-            .attr("height", d => height - y(d.count))
-            .attr("fill", d3.schemeTableau10[deptIndex % d3.schemeTableau10.length]);
+            .attr("height", (d) => height - y(d.count))
+            .attr(
+                "fill",
+                d3.schemeTableau10[deptIndex % d3.schemeTableau10.length],
+            );
 
+        svg.selectAll(".label")
+            .data(positionData)
+            .enter()
+            .append("text")
+            .text((d) => d.count)
+            .attr("x", (d) => x(d.position)! + x.bandwidth() / 2)
+            .attr("y", (d) => y(d.count) - 5)
+            .attr("text-anchor", "middle")
+            .style("font-family", "san-serif")
+            .style("font-size", "9px");
 
-            svg.selectAll('.label')
-            .data(PositionData)
-            .enter().append('text')
-            .text(d => d.count)
-            .attr('x', d => x(d.position)! + x.bandwidth() /2)
-            .attr('y', d => y(d.count) - 5)
-            .attr('text-anchor','middle')
-            .style('font-family', 'san-serif')
-            .style('font-size', '9px');
         // Add department name at the top
-        svg.append("text")
+        const topText = svg
+            .append("text")
+            .attr("text-anchor", "middle")
+            .style("font-weight", "bold");
+
+        topText
+            .append("tspan")
             .attr("x", width / 2)
             .attr("y", -10)
-            .attr("text-anchor", "middle")
-            .style("font-weight", "bold")
             .text(department);
+
+        topText
+            .append("tspan")
+            .attr("x", width / 2)
+            .attr("dy", "1.5em")
+            .text(`${totalCount}`)
+            .style("font-size", "12px"); // department 이름 아래에 위치
     }
 </script>
 

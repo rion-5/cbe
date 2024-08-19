@@ -28,7 +28,7 @@
         // rankData: { rank: string; count: number }[];
     }
 
-    interface DepartmentPosition{
+    interface DepartmentPosition {
         department: string;
         positionData: positionData[];
         // positionData: { position:string; count:number}[];
@@ -62,12 +62,9 @@
     //     console.log(JSON.stringify(data, null, 2));
     // }
 
-
-
     onMount(async () => {
         //spring-root 에서 가져옴
         // const response = await fetch(`${apiBaseUrl}/faculty`);
-
 
         //SvelteKit API endpoint 사용 http://localhost:3000/api/faculty
         const response = await fetch("/api/faculty");
@@ -80,7 +77,7 @@
             department: string;
             rank: string;
             position: string;
-            employmentType: string,
+            employmentType: string;
             retirementTrack: string;
             foreigner: string;
         }[] = await response.json();
@@ -95,8 +92,6 @@
             foreigner: d.foreigner,
         }));
         // console.log(JSON.stringify(facultyList, null, 2));
-
-
 
         tenureTrackFaculty = data.filter(
             (faculty) => faculty.retirementTrack === "정년트랙",
@@ -136,7 +131,11 @@
                 return acc;
             }, [] as RankData[]);
         departmentRank = data
-            .filter((item) => item.employmentType === "전임교원")
+            .filter(
+                (item) =>
+                    item.employmentType === "전임교원" 
+                    // && item.department !== "경상대학"
+            )
             .reduce((acc: DepartmentRank[], faculty) => {
                 let department = acc.find(
                     (dept) => dept.department === faculty.department,
@@ -162,10 +161,15 @@
                 rankData.count++;
                 return acc;
             }, []);
-        //    console.log(JSON.stringify(departmentRank, null, 2));
-        
+
+        //console.log(JSON.stringify(departmentRank, null, 2));
+
         departmentPosition = data
-            .filter((item) => item.position !== "장학조교" && item.department !== "경상대학")
+            // .filter(
+            //     (item) =>
+
+            //         item.department !== "경상대학",
+            // )
             .reduce((acc: DepartmentPosition[], faculty) => {
                 let department = acc.find(
                     (dept) => dept.department === faculty.department,
@@ -191,37 +195,37 @@
                 positionData.count++;
                 return acc;
             }, []);
-           console.log(JSON.stringify(departmentPosition, null, 2));
-        
-
+        console.log(JSON.stringify(departmentPosition, null, 2));
     });
 </script>
 
 <div class="container">
     <h1>경상대 교원현황</h1>
     <div class="row">
-        <div>
+        <!-- <div>
             <h2>전임교원</h2>
             <div class="responsive-svg-container">
                 <DepartmentCountsBarChart {departmentCounts} />
             </div>
         </div>
-                <div>
+        <div>
             <h2>경제학부</h2>
             <div class="responsive-svg-container">
                 <RankArcChart {rankEconomics} />
             </div>
-        </div>
-        <div>
-            <h2>학부별 교원구성</h2>
-            <div class="responsive-svg-container">
-                <DepartmentPositionBarChart {departmentPosition} />
-            </div>
-        </div>
+        </div> -->
+
         <div>
             <h2>학부별 전임교원구성</h2>
             <div class="responsive-svg-container">
                 <DepartmentRankArcChart {departmentRank} />
+            </div>
+        </div>
+
+        <div>
+            <h2>학부별 교원구성</h2>
+            <div class="responsive-svg-container">
+                <DepartmentPositionBarChart {departmentPosition} />
             </div>
         </div>
     </div>

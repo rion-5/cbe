@@ -11,6 +11,8 @@ export const GET = async () => {
             외국인여부 AS foreigner
         FROM 교원조회및인사카드출력
         WHERE 대학 = '경상대학' AND 재직구분 = '재직'
+        ORDER BY array_position(ARRAY['경영학부','경제학부','보험계리학과','회계세무학과'], 학과::text),
+                array_position(ARRAY['전임교원','겸임교수','강사','명예교수'], 직종::text)
     `);
 
     // Assuming 'query' returns an array of objects
@@ -23,6 +25,6 @@ export const GET = async () => {
         foreigner: item.foreigner
     }));
     
-    console.log(JSON.stringify(formattedFaculty, null, 2));
+    // console.log(JSON.stringify(formattedFaculty, null, 2));
     return new Response(JSON.stringify(formattedFaculty), { status: 200 });
 };
