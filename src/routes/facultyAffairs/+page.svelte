@@ -19,6 +19,9 @@
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     onMount(async () => {
         const response = await fetch(`${apiBaseUrl}/faculty`);
+        response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
         if (!response.ok) {
             throw new Error("Failed to fetch data");
         }
