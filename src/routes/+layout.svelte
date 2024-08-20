@@ -2,6 +2,7 @@
     import { auth } from "../stores/auth";
     import { goto } from "$app/navigation";
     import { page } from "$app/stores";
+    import "../app.css";
 
     let isLoggedIn: boolean;
     let isMenuOpen = false;
@@ -47,6 +48,9 @@
     <div class:menu-open={isMenuOpen} class="menu">
         <a href="/" class="active" on:click={() => menu_close()}>Home</a>
         <a href="/facultyAffairs" on:click={() => menu_close()}>Faculty Affairs</a>
+        <a href="/academicAffairs" on:click={() => menu_close()}>Academic Affairs</a>
+
+        
         {#if isLoggedIn}
             <button type="button" on:click={handleLogout}>Logout</button>
         {:else}

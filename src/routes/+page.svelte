@@ -134,7 +134,7 @@
             .filter(
                 (item) =>
                     item.employmentType === "전임교원" 
-                    // && item.department !== "경상대학"
+                    && item.department !== "경상대학"
             )
             .reduce((acc: DepartmentRank[], faculty) => {
                 let department = acc.find(
@@ -165,11 +165,11 @@
         //console.log(JSON.stringify(departmentRank, null, 2));
 
         departmentPosition = data
-            // .filter(
-            //     (item) =>
-
-            //         item.department !== "경상대학",
-            // )
+            .filter(
+                (item) =>
+                    item.position !=="장학조교" &&
+                    item.department !== "경상대학",
+            )
             .reduce((acc: DepartmentPosition[], faculty) => {
                 let department = acc.find(
                     (dept) => dept.department === faculty.department,
@@ -214,7 +214,12 @@
                 <RankArcChart {rankEconomics} />
             </div>
         </div> -->
-
+        <div>
+            <h2>학부별 교원구성</h2>
+            <div class="responsive-svg-container">
+                <DepartmentPositionBarChart {departmentPosition} />
+            </div>
+        </div>
         <div>
             <h2>학부별 전임교원구성</h2>
             <div class="responsive-svg-container">
@@ -222,15 +227,18 @@
             </div>
         </div>
 
-        <div>
-            <h2>학부별 교원구성</h2>
-            <div class="responsive-svg-container">
-                <DepartmentPositionBarChart {departmentPosition} />
-            </div>
-        </div>
+
     </div>
 </div>
-
+<h1 class="text-3xl font-bold underline">
+    Hello world!
+  </h1>
+  
+  <style lang="postcss">
+    :global(html) {
+      background-color: theme(colors.gray.100);
+    }
+  </style>
 <!-- {#each departmentRank as item}
     <li>
         학과: {item.department} 
