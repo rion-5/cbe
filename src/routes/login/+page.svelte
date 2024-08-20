@@ -35,8 +35,8 @@
 <div class="login-container">
 	<div class="login-box">
 		<h2>Login</h2>
-		<input type="text" bind:value={loginId} placeholder="Login ID" />
-		<input type="password" bind:value={password} placeholder="Password" />
+		<input type="text" id="loginid" bind:value={loginId} placeholder="Login ID" />
+		<input type="password" id="password" bind:value={password} placeholder="Password" />
 		<button on:click={handleLogin}>Login</button>
 
 		{#if error}

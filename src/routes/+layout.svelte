@@ -13,7 +13,8 @@
     });
 
     // 보호된 경로 목록
-    const protectedRoutes = ["/facultyAffairs"];
+    // const protectedRoutes = ["/scholarship", "/lecture"];
+    const protectedRoutes = [];
 
     // 페이지 이동 시 로그인 상태 확인
     $: page.subscribe(($page) => {
@@ -48,9 +49,8 @@
               <a class="text-zinc-900 hover:text-zinc-700" href="/" on:click={() => menu_close()} >Home</a>
               <a class="text-zinc-900 hover:text-zinc-700" href="/facultyAffairs" on:click={() => menu_close()}>Faculty</a>
               <a class="text-zinc-900 hover:text-zinc-700" href="/academicAffairs" on:click={() => menu_close()}>Academic</a>
-              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Tech </a>
-              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Culture </a>
-              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Sports </a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/lecture"> Lecture </a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/scholarship">Scholarship</a>
               {#if isLoggedIn}
               <button type="button" on:click={handleLogout}>Logout</button>
                 {:else}
