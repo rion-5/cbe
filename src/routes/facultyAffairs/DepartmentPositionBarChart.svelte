@@ -83,7 +83,7 @@
             .selectAll("text")
             .attr("transform", "rotate(-25)")
             .style("text-anchor", "end");
-            // .style("text-anchor", "middle");
+        // .style("text-anchor", "middle");
 
         // svg.append("g")
         //     .call(d3.axisLeft(y));

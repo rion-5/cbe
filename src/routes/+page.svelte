@@ -20,7 +20,7 @@
 
     onMount(async () => {
         const response = await fetch(`${apiBaseUrl}/faculty`);
-        
+
         if (!response.ok) {
             throw new Error("Failed to fetch data");
         }
@@ -55,15 +55,16 @@
         //console.log(JSON.stringify(departmentCounts, null, 2));
     });
 </script>
+
 <section class="w-full">
     <main class="container mx-auto px-4 md:px-6 py-8">
-      <section class="mb-8">
-        <h4>Hello, CBE!</h4>
+        <section class="mb-8">
+            <h4>Hello, CBE!</h4>
             <div>
-            {#each departmentCounts as item}
-                <li>학과: {item.department}</li>
-            {/each}
+                {#each departmentCounts as item}
+                    <li>학과: {item.department}</li>
+                {/each}
             </div>
-      </section>
+        </section>
     </main>
 </section>

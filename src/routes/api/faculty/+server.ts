@@ -24,7 +24,7 @@ export const GET = async () => {
         retirementTrack: item.retirementtrack,
         foreigner: item.foreigner
     }));
-    
+
     // console.log(JSON.stringify(formattedFaculty, null, 2));
     return new Response(JSON.stringify(formattedFaculty), { status: 200 });
 };

@@ -133,8 +133,8 @@
         departmentRank = data
             .filter(
                 (item) =>
-                    item.employmentType === "전임교원" 
-                    && item.department !== "경상대학"
+                    item.employmentType === "전임교원" &&
+                    item.department !== "경상대학",
             )
             .reduce((acc: DepartmentRank[], faculty) => {
                 let department = acc.find(
@@ -167,7 +167,7 @@
         departmentPosition = data
             .filter(
                 (item) =>
-                    item.position !=="장학조교" &&
+                    item.position !== "장학조교" &&
                     item.department !== "경상대학",
             )
             .reduce((acc: DepartmentPosition[], faculty) => {
@@ -198,13 +198,14 @@
         //console.log(JSON.stringify(departmentPosition, null, 2));
     });
 </script>
+
 <section class="w-full">
     <main class="container mx-auto px-4 md:px-6 py-8">
-      <section class="mb-8">
-<div class="container">
-    <h1>경상대 교원현황</h1>
-    <div class="row">
-        <!-- <div>
+        <section class="mb-8">
+            <div class="container">
+                <h1>경상대 교원현황</h1>
+                <div class="row">
+                    <!-- <div>
             <h2>전임교원</h2>
             <div class="responsive-svg-container">
                 <DepartmentCountsBarChart {departmentCounts} />
@@ -216,33 +217,32 @@
                 <RankArcChart {rankEconomics} />
             </div>
         </div> -->
-        <div>
-            <h2>학부별 교원구성</h2>
-            <div class="responsive-svg-container">
-                <DepartmentPositionBarChart {departmentPosition} />
+                    <div>
+                        <h2>학부별 교원구성</h2>
+                        <div class="responsive-svg-container">
+                            <DepartmentPositionBarChart {departmentPosition} />
+                        </div>
+                    </div>
+                    <div>
+                        <h2>학부별 전임교원구성</h2>
+                        <div class="responsive-svg-container">
+                            <DepartmentRankArcChart {departmentRank} />
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div>
-            <h2>학부별 전임교원구성</h2>
-            <div class="responsive-svg-container">
-                <DepartmentRankArcChart {departmentRank} />
-            </div>
-        </div>
-
-
-    </div>
-</div>
-
+        </section>
+    </main>
 </section>
-</main>
-</section>
-  <style lang="postcss">
-    :global(html) {
-      background-color: theme(colors.gray.100);
-    }
-  </style>
+
 <!-- {#each departmentRank as item}
     <li>
         학과: {item.department} 
     </li>
 {/each} -->
+
+<style lang="postcss">
+    :global(html) {
+        background-color: theme(colors.gray.100);
+    }
+</style>

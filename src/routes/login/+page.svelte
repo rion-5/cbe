@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { auth } from '../../stores/auth';
-	import { login } from '$lib/api/login';
-	import type { LoginParam } from '$lib/types/LoginParam';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/stores';
+	import { auth } from "../../stores/auth";
+	import { login } from "$lib/api/login";
+	import type { LoginParam } from "$lib/types/LoginParam";
+	import { goto } from "$app/navigation";
+	import { page } from "$app/stores";
 
-	let loginId = '';
-	let password = '';
+	let loginId = "";
+	let password = "";
 	let error: string | null = null;
 
 	async function handleLogin() {
@@ -17,7 +17,7 @@
 			if (result.success) {
 				auth.set({ isLoggedIn: true, token: result.data.accessToken });
 				error = null;
-				const target = $page.url.searchParams.get('redirect') || '/';
+				const target = $page.url.searchParams.get("redirect") || "/";
 				goto(target); // 로그인 성공 후 원래 이동하려던 페이지로 리디렉션
 			} else {
 				error = result.message;
@@ -26,7 +26,7 @@
 			if (err instanceof Error) {
 				error = err.message;
 			} else {
-				error = 'An unknown error occurred';
+				error = "An unknown error occurred";
 			}
 		}
 	}
@@ -35,8 +35,18 @@
 <div class="login-container">
 	<div class="login-box">
 		<h2>Login</h2>
-		<input type="text" id="loginid" bind:value={loginId} placeholder="Login ID" />
-		<input type="password" id="password" bind:value={password} placeholder="Password" />
+		<input
+			type="text"
+			id="loginid"
+			bind:value={loginId}
+			placeholder="Login ID"
+		/>
+		<input
+			type="password"
+			id="password"
+			bind:value={password}
+			placeholder="Password"
+		/>
 		<button on:click={handleLogin}>Login</button>
 
 		{#if error}
