@@ -195,7 +195,7 @@
                 positionData.count++;
                 return acc;
             }, []);
-        console.log(JSON.stringify(departmentPosition, null, 2));
+        //console.log(JSON.stringify(departmentPosition, null, 2));
     });
 </script>
 

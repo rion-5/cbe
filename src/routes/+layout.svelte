@@ -40,126 +40,27 @@
 </script>
 
 <nav>
-    <button class="menu-toggle" on:click={toggleMenu}>
-        <span class="menu-icon"></span>
-        <span class="menu-icon"></span>
-        <span class="menu-icon"></span>
-    </button>
-    <div class:menu-open={isMenuOpen} class="menu">
-        <a href="/" class="active" on:click={() => menu_close()}>Home</a>
-        <a href="/facultyAffairs" on:click={() => menu_close()}>Faculty Affairs</a>
-        <a href="/academicAffairs" on:click={() => menu_close()}>Academic Affairs</a>
+    <header class="bg-white text-zinc-900 py-4 border-b">
+        <div class="container mx-auto px-4 md:px-6">
+          <nav class="flex items-center justify-between">
+            <div class="text-2xl font-bold">HYU CBE</div>
+            <div class:menu-open={isMenuOpen} class="space-x-4">
+              <a class="text-zinc-900 hover:text-zinc-700" href="/" on:click={() => menu_close()} >Home</a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/facultyAffairs" on:click={() => menu_close()}>Faculty</a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/academicAffairs" on:click={() => menu_close()}>Academic</a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Tech </a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Culture </a>
+              <a class="text-zinc-900 hover:text-zinc-700" href="/"> Sports </a>
+              {#if isLoggedIn}
+              <button type="button" on:click={handleLogout}>Logout</button>
+                {:else}
+              <a href="/login" on:click={() => menu_close()}>Login</a>
+                {/if}
+            </div>
+          </nav>
+        </div>
+      </header>
 
-        
-        {#if isLoggedIn}
-            <button type="button" on:click={handleLogout}>Logout</button>
-        {:else}
-            <a href="/login" on:click={() => menu_close()}>Login</a>
-        {/if}
-    </div>
 </nav>
 
 <slot></slot>
-
-<style>
-    nav {
-        background-color:rebeccapurple;
-        padding: 10px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
-
-    .menu-toggle {
-        display: none;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        margin: 0;
-        position: relative;
-        z-index: 1;
-    }
-
-    .menu-icon {
-        display: block;
-        width: 25px;
-        height: 3px;
-        background: white;
-        margin: 5px 0;
-        transition: background 0.3s;
-    }
-
-    .menu {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .menu a,
-    .menu button {
-        color: white;
-        text-decoration: none;
-        font-size: 16px;
-        padding: 8px 15px;
-        border-radius: 4px;
-        transition:
-            background-color 0.3s,
-            color 0.3s;
-    }
-
-    .menu a:hover {
-        background-color: #575757;
-        color: #fff;
-    }
-
-    .menu a.active {
-        background-color: #007bff;
-        color: white;
-    }
-
-    .menu button {
-        background-color: transparent;
-        border: none;
-        color: white;
-        font-size: 16px;
-        padding: 8px 15px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .menu button:hover {
-        background-color: #575757;
-    }
-
-    @media (max-width: 768px) {
-        .menu-toggle {
-            display: block;
-        }
-
-        .menu {
-            display: none;
-            flex-direction: column;
-            width: 100%;
-            background-color: #333;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            z-index: 0;
-        }
-
-        .menu.menu-open {
-            display: flex;
-        }
-
-        .menu a,
-        .menu button {
-            margin: 10px 0;
-            text-align: center;
-        }
-    }
-</style>

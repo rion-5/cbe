@@ -52,6 +52,6 @@
                 return acc;
             }, [] as DepartmentCounts[]);
 
-        console.log(JSON.stringify(departmentCounts, null, 2));
+        //console.log(JSON.stringify(departmentCounts, null, 2));
     });
 </script>

@@ -4,21 +4,6 @@
 -->
 
 <section class="w-full">
-  <header class="bg-white text-zinc-900 py-4 border-b">
-    <div class="container mx-auto px-4 md:px-6">
-      <nav class="flex items-center justify-between">
-        <div class="text-2xl font-bold">News Site</div>
-        <div class="space-x-4">
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Home </a>
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Politics </a>
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Business </a>
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Tech </a>
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Culture </a>
-          <a class="text-zinc-900 hover:text-zinc-700" href="/"> Sports </a>
-        </div>
-      </nav>
-    </div>
-  </header>
   <main class="container mx-auto px-4 md:px-6 py-8">
     <section class="mb-8">
       <h2 class="text-2xl font-bold mb-4">Top Story</h2>
