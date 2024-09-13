@@ -2,6 +2,44 @@
 // v0 by Vercel.
 // https://v0.dev/t/AfXYpLG
 -->
+<script lang="ts">
+  import { error } from "@sveltejs/kit";
+  import { onMount } from "svelte";
+
+  interface Academic {
+    department: string;
+    nationality: string;
+    count: string;
+    term: string;
+  }
+
+  let academicList:Academic[] = [];
+
+  onMount(async () => {
+    const response = await fetch("/api/academic?term=202402");
+    if (!response.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    // const data:Array< {
+    //   department: string;
+    //   nationality: string;
+    //   count: string;
+    //   term: string;
+    // }> = await response.json();
+
+    academicList = await response.json();
+    // console.log(academicList);
+    // academicList = data.map(({department,nationality,count,term}) => ({department,nationality,count,term}));
+    // console.log(JSON.stringify(data,null,2));
+    // console.log(JSON.stringify(academicList,null,2));
+
+    const academicEconomics = academicList
+        .filter(d => d.department === "경제학부")
+        .map(({nationality,count,term}) => ({nationality,count,term}));
+    console.log(JSON.stringify(academicEconomics,null,2));
+  });
+</script>
 
 <section class="w-full">
   <main class="container mx-auto px-4 md:px-6 py-8">

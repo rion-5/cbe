@@ -73,31 +73,32 @@
             throw new Error("Failed to fetch data");
         }
 
-        const data: {
-            department: string;
-            rank: string;
-            position: string;
-            employmentType: string;
-            retirementTrack: string;
-            foreigner: string;
-        }[] = await response.json();
+        // const data: {
+        //     department: string;
+        //     rank: string;
+        //     position: string;
+        //     employmentType: string;
+        //     retirementTrack: string;
+        //     foreigner: string;
+        // }[] = await response.json();
 
-        // 데이터 추출 및 변환
-        facultyList = data.map((d) => ({
-            department: d.department,
-            rank: d.rank,
-            position: d.position,
-            employmentType: d.employmentType,
-            retirementTrack: d.retirementTrack,
-            foreigner: d.foreigner,
-        }));
+        // // 데이터 추출 및 변환
+        // facultyList = data.map((d) => ({
+        //     department: d.department,
+        //     rank: d.rank,
+        //     position: d.position,
+        //     employmentType: d.employmentType,
+        //     retirementTrack: d.retirementTrack,
+        //     foreigner: d.foreigner,
+        // }));
+        facultyList = await response.json();
         // console.log(JSON.stringify(facultyList, null, 2));
 
-        tenureTrackFaculty = data.filter(
+        tenureTrackFaculty = facultyList.filter(
             (faculty) => faculty.retirementTrack === "정년트랙",
         );
 
-        departmentCounts = data
+        departmentCounts = facultyList
             .filter((faculty) => faculty.employmentType === "전임교원") // 필터링
             .reduce((acc, faculty) => {
                 const existingDepartment = acc.find(
@@ -113,7 +114,7 @@
 
         //console.log(JSON.stringify(departmentCounts, null, 2));
 
-        rankEconomics = data
+        rankEconomics = facultyList
             .filter(
                 (faculty) =>
                     faculty.employmentType === "전임교원" &&
@@ -130,7 +131,7 @@
                 }
                 return acc;
             }, [] as RankData[]);
-        departmentRank = data
+        departmentRank = facultyList
             .filter(
                 (item) =>
                     item.employmentType === "전임교원" &&
@@ -164,7 +165,7 @@
 
         //console.log(JSON.stringify(departmentRank, null, 2));
 
-        departmentPosition = data
+        departmentPosition = facultyList
             .filter(
                 (item) =>
                     item.position !== "장학조교" &&
