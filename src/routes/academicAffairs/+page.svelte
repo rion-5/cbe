@@ -9,7 +9,7 @@
   interface Academic {
     department: string;
     nationality: string;
-    count: string;
+    academicstatus: string;
     term: string;
   }
 
@@ -32,12 +32,12 @@
     // console.log(academicList);
     // academicList = data.map(({department,nationality,count,term}) => ({department,nationality,count,term}));
     // console.log(JSON.stringify(data,null,2));
-    // console.log(JSON.stringify(academicList,null,2));
+    console.log(JSON.stringify(academicList,null,2));
 
-    const academicEconomics = academicList
-        .filter(d => d.department === "경제학부")
-        .map(({nationality,count,term}) => ({nationality,count,term}));
-    console.log(JSON.stringify(academicEconomics,null,2));
+    // const academicEconomics = academicList
+    //     .filter(d => d.department === "경제학부")
+    //     .map(({nationality,academicstatus,term}) => ({nationality,academicstatus,term}));
+    // console.log(JSON.stringify(academicEconomics,null,2));
   });
 </script>
 
