@@ -168,7 +168,10 @@
         departmentPosition = facultyList
             .filter(
                 (item) =>
-                    item.position !== "장학조교" &&
+                    // item.position !== "장학조교" &&
+                    (item.position === "전임교원" ||
+                        item.position === "겸임교수" ||
+                        item.position === "강사") &&
                     item.department !== "경상대학",
             )
             .reduce((acc: DepartmentPosition[], faculty) => {
@@ -207,25 +210,25 @@
                 <h1>경상대 교원현황</h1>
                 <div class="row">
                     <!-- <div>
-            <h2>전임교원</h2>
-            <div class="responsive-svg-container">
-                <DepartmentCountsBarChart {departmentCounts} />
-            </div>
-        </div>
-        <div>
-            <h2>경제학부</h2>
-            <div class="responsive-svg-container">
-                <RankArcChart {rankEconomics} />
-            </div>
-        </div> -->
+                        <h2>전임교원</h2>
+                        <div class="responsive-svg-container">
+                            <DepartmentCountsBarChart {departmentCounts} />
+                        </div>
+                    </div>
                     <div>
-                        <h2>학부별 교원구성</h2>
+                        <h2>경제학부</h2>
+                        <div class="responsive-svg-container">
+                            <RankArcChart {rankEconomics} />
+                        </div>
+                    </div> -->
+                    <div>
+                        <h2>학과(부)별 교원수</h2>
                         <div class="responsive-svg-container">
                             <DepartmentPositionBarChart {departmentPosition} />
                         </div>
                     </div>
                     <div>
-                        <h2>학부별 전임교원구성</h2>
+                        <h2>직급별 전임교원수</h2>
                         <div class="responsive-svg-container">
                             <DepartmentRankArcChart {departmentRank} />
                         </div>

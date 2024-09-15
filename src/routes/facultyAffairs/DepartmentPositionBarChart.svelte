@@ -53,12 +53,12 @@
         const container = d3.select(selector);
         const element = container.node() as Element;
         const containerWidth = element?.getBoundingClientRect().width || 200;
-        const containerHeight = containerWidth * 0.6;
+        const containerHeight = containerWidth;
 
         // Clear previous chart
         container.selectAll("*").remove();
 
-        const margin = { top: 30, right: 20, bottom: 50, left: 40 };
+        const margin = { top: 30, right: 30, bottom: 30, left: 30 };
         const width = containerWidth - margin.left - margin.right;
         const height = containerHeight - margin.top - margin.bottom;
 
@@ -73,7 +73,7 @@
             .scaleBand()
             .domain(positionData.map((d) => d.position))
             .range([0, width])
-            .padding(0.2);
+            .padding(0.4);
 
         const y = d3.scaleLinear().domain([0, maxY]).nice().range([height, 0]);
 
@@ -81,9 +81,9 @@
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x))
             .selectAll("text")
-            .attr("transform", "rotate(-25)")
-            .style("text-anchor", "end");
-        // .style("text-anchor", "middle");
+            .attr("transform", "rotate(0)")
+            // .style("text-anchor", "end");
+            .style("text-anchor", "middle");
 
         // svg.append("g")
         //     .call(d3.axisLeft(y));
@@ -129,7 +129,7 @@
             .append("tspan")
             .attr("x", width / 2)
             .attr("dy", "1.5em")
-            .text(`${totalCount}`)
+            .text(`${totalCount} 명`)
             .style("font-size", "12px"); // department 이름 아래에 위치
     }
 </script>
@@ -145,15 +145,15 @@
 <style>
     .grid-container {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         gap: 20px;
         padding: 20px;
     }
 
     .chart-container {
         width: 100%;
-        height: 0;
-        padding-bottom: 60%; /* Maintain aspect ratio for the chart */
+        height: 300px;
+        padding-bottom: 70%; /* Maintain aspect ratio for the chart */
         position: relative;
     }
 
