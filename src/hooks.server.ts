@@ -3,7 +3,7 @@ import type { Handle } from '@sveltejs/kit';
 export const handle: Handle = async ({ event, resolve }) => {
     const response = await resolve(event);
 
-    const allowedOrigins = ['http://localhost:3000', 'http://166.104.191.113:3000'];
+    const allowedOrigins = ['http://localhost:3000', 'http://166.104.191.113:3000','http://192.168.0.39:3000'];
     const origin = event.request.headers.get('origin');
 
     if (origin && allowedOrigins.includes(origin)) {
