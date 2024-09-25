@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import DepartmentCountsBarChart from "./DepartmentCountsBarChart.svelte";
-    import RankArcChart from "./RankArcChart.svelte";
+    // import DepartmentCountsBarChart from "./DepartmentCountsBarChart.svelte";
+    // import RankArcChart from "./RankArcChart.svelte_o";
     import DepartmentRankArcChart from "./DepartmentRankArcChart.svelte";
     import DepartmentPositionBarChart from "./DepartmentPositionBarChart.svelte";
 

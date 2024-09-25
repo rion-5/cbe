@@ -134,15 +134,15 @@
             .text(`${totalCount} 명`)
             .style("font-size", "12px"); // department 이름 아래에 위치
 
-        // // 라운드형 박스 추가
-        // svg.append("rect")
-        //     .attr("x", -margin.left) // 전체 SVG의 시작점으로 설정
-        //     .attr("y", -margin.top) // 위쪽 마진까지 포함
-        //     .attr("width", containerWidth) // 전체 너비
-        //     .attr("height", containerHeight) // 전체 높이
-        //     .attr("rx", 15) // 모서리를 둥글게 (15px 반경)
-        //     .attr("ry", 15) // 모서리를 둥글게 (15px 반경)
-        //     .attr("fill", "rgba(255, 182, 193, 0.2)"); // 연한 핑크 (투명도 0.2)
+        // 라운드형 박스 추가
+        svg.append("rect")
+            .attr("x", -margin.left) // 전체 SVG의 시작점으로 설정
+            .attr("y", -margin.top) // 위쪽 마진까지 포함
+            .attr("width", containerWidth) // 전체 너비
+            .attr("height", containerHeight) // 전체 높이
+            .attr("rx", 15) // 모서리를 둥글게 (15px 반경)
+            .attr("ry", 15) // 모서리를 둥글게 (15px 반경)
+            .attr("fill", "rgba(255, 182, 193, 0.2)"); // 연한 핑크 (투명도 0.2)
     }
 </script>
 
@@ -168,12 +168,7 @@
         padding-bottom: 70%; /* Maintain aspect ratio for the chart */
         position: relative;
     }
-    .chart-container {
-    border-radius: 15px;  /* 컨테이너 자체에도 라운드형 모양 추가 */
-    background-color: rgba(173, 216, 230, 0.2);  /* 연한 하늘색 백그라운드 */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* 박스에 그림자 추가 */
-    padding: 20px;  /* 여백 추가 */
-}
+
 
     .chart-container > div {
         position: absolute;

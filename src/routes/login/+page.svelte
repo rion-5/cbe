@@ -13,7 +13,7 @@
 		const params: LoginParam = { loginId, password };
 		try {
 			const result = await login(params);
-
+			console.log(JSON.stringify(result, null, 2));
 			if (result.success) {
 				auth.set({ isLoggedIn: true, token: result.data.accessToken });
 				error = null;

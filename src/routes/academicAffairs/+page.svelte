@@ -49,7 +49,7 @@
 <section class="w-full">
   <main class="container mx-auto px-4 md:px-6 py-8">
     <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Top Story</h2>
+      <h2 class="text-2xl font-bold mb-4">경상대 학부(과)별 재학생수</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <DepartmentStudentBarChart {studentCount} />
