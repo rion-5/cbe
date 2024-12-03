@@ -39,7 +39,7 @@
 			type="text"
 			id="loginid"
 			bind:value={loginId}
-			placeholder="Login ID"
+			placeholder="Portal ID"
 		/>
 		<input
 			type="password"
