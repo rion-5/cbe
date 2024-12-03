@@ -13,7 +13,7 @@
     });
 
     // 보호된 경로 목록
-    const protectedRoutes = ["/scholarship", "/lecture"];
+    const protectedRoutes = ["/facultyAffairs","/academicAffairs","/scholarship", "/lecture"];
     // const protectedRoutes = [];
 
     // 페이지 이동 시 로그인 상태 확인

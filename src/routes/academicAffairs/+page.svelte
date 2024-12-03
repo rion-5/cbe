@@ -6,6 +6,7 @@
   import { error } from "@sveltejs/kit";
   import { onMount } from "svelte";
   import DepartmentStudentBarChart from "./DepartmentStudentBarChart.svelte";
+  import NationalityBarChart from "./NationalityBarChart.svelte";
 
   interface Academic {
     department: string;
@@ -18,9 +19,17 @@
     count: number;
   }
 
+  interface nationalityStudentCounts {
+    nationality: string;
+    count: number;
+  }
+
   let academicList: Academic[] = [];
 
   let studentCount: DepartmentStudentCounts[] = [];
+  let foreignStudentCount: nationalityStudentCounts[] = [];
+  let economicForeignStudentCount: nationalityStudentCounts[] = [];
+  let businessForeignStudentCount: nationalityStudentCounts[] = [];
 
   onMount(async () => {
     const response = await fetch("/api/academic?term=202402");
@@ -43,326 +52,126 @@
         }
         return acc;
       }, [] as DepartmentStudentCounts[]);
+    
+      foreignStudentCount = academicList
+      .filter((students) => students.academicstatus === "재학생" && students.nationality !="대한민국") // 필터링
+      .reduce((acc, students) => {
+        const existingNationality = acc.find(
+          (item) => item.nationality === students.nationality,
+        );
+        if (existingNationality) {
+          existingNationality.count++;
+        } else {
+          acc.push({ nationality: students.nationality, count: 1 });
+        }
+        return acc;
+      }, [] as nationalityStudentCounts[]); 
+      
+      economicForeignStudentCount = academicList
+      .filter((students) => students.academicstatus === "재학생" 
+          // && students.nationality !="대한민국" 
+          && students.department === "경제학부") // 필터링
+      .reduce((acc, students) => {
+        const existingNationality = acc.find(
+          (item) => item.nationality === students.nationality,
+        );
+        if (existingNationality) {
+          existingNationality.count++;
+        } else {
+          acc.push({ nationality: students.nationality, count: 1 });
+        }
+        return acc;
+      }, [] as nationalityStudentCounts[]);   
+
+      businessForeignStudentCount = academicList
+      .filter((students) => students.academicstatus === "재학생" 
+          // && students.nationality !="대한민국" 
+          && students.department === "경영학부") // 필터링
+      .reduce((acc, students) => {
+        const existingNationality = acc.find(
+          (item) => item.nationality === students.nationality,
+        );
+        if (existingNationality) {
+          existingNationality.count++;
+        } else {
+          acc.push({ nationality: students.nationality, count: 1 });
+        }
+        return acc;
+      }, [] as nationalityStudentCounts[]);  
+
+
   });
 </script>
 
 <section class="w-full">
   <main class="container mx-auto px-4 md:px-6 py-8">
     <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">경상대 학부(과)별 재학생수</h2>
+      <h2 class="text-2xl font-bold mb-4">경상대 재학생</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
+          <h3 class="text-xl font-bold mb-2">재학생수</h3>
           <DepartmentStudentBarChart {studentCount} />
         </div>
-        <div class="flex flex-col justify-center">
-          <h3 class="text-xl font-bold mb-2">Top Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the top story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-          {#each studentCount as item}
-            <li>학과: {item.department}</li>
-          {/each}
+        <div>
+          <h3 class="text-xl font-bold mb-2">국적별 외국인 재학생수</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>국적</th>
+                <th>학생수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {#each foreignStudentCount as { nationality, count }}
+                <tr>
+                  <td>{nationality}</td>
+                  <td>{count}</td>
+                </tr>
+              {/each}
+            </tbody>
+          </table>
         </div>
       </div>
     </section>
     <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Politics</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <h2 class="text-2xl font-bold mb-4">학과별 재학생 국적</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <img
-            alt="Politics Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Politics Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the politics story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
+          <h3 class="text-xl mb-2 mt-4">경제학부</h3>
+          <NationalityBarChart studentCount = {economicForeignStudentCount} 
+          chartId="경제학부" />
+
         </div>
         <div>
-          <img
-            alt="Politics Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Politics Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the politics story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Politics Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Politics Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the politics story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Business</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <img
-            alt="Business Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Business Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the business story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Business Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Business Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the business story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Business Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Business Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the business story. Click the link to
-            read more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Tech</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <img
-            alt="Tech Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Tech Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the tech story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Tech Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Tech Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the tech story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Tech Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Tech Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the tech story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Culture</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <img
-            alt="Culture Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Culture Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the culture story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Culture Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Culture Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the culture story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Culture Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Culture Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the culture story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="mb-8">
-      <h2 class="text-2xl font-bold mb-4">Sports</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div>
-          <img
-            alt="Sports Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Sports Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the sports story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Sports Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Sports Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the sports story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
-        </div>
-        <div>
-          <img
-            alt="Sports Story"
-            class="w-full h-64 object-cover object-center rounded-lg"
-            height="400"
-            src="/placeholder.svg"
-            width="600"
-            style="aspect-ratio:600/400;object-fit:cover"
-          />
-          <h3 class="text-xl font-bold mb-2 mt-4">Sports Story Headline</h3>
-          <p class="text-zinc-500 dark:text-zinc-400">
-            This is a brief summary of the sports story. Click the link to read
-            more.
-          </p>
-          <a class="text-blue-500 hover:text-blue-700 mt-4" href="/">
-            Read More
-          </a>
+          <h3 class="text-xl mb-2 mt-4">경영학부</h3>
+          <NationalityBarChart studentCount = {businessForeignStudentCount} 
+          chartId="경영학부"/>
+
+
         </div>
       </div>
     </section>
   </main>
 </section>
+<style>
+    table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+
+  th, td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+</style>

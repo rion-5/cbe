@@ -203,50 +203,98 @@
     });
 </script>
 
-<section class="w-full">
-    <main class="container mx-auto px-4 md:px-6 py-8">
-        <section class="mb-8">
-            <div class="container">
-                <h1>경상대 교원현황</h1>
-                <div class="row">
-                    <!-- <div>
-                        <h2>전임교원</h2>
-                        <div class="responsive-svg-container">
-                            <DepartmentCountsBarChart {departmentCounts} />
-                        </div>
-                    </div>
-                    <div>
-                        <h2>경제학부</h2>
-                        <div class="responsive-svg-container">
-                            <RankArcChart {rankEconomics} />
-                        </div>
-                    </div> -->
-                    <div>
-                        <h2>학과(부)별 교원수</h2>
-                        <div class="responsive-svg-container">
-                            <DepartmentPositionBarChart {departmentPosition} />
-                        </div>
-                    </div>
-                    <div>
-                        <h2>직급별 전임교원수</h2>
-                        <div class="responsive-svg-container">
-                            <DepartmentRankArcChart {departmentRank} />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-</section>
+<style>
+    /* 기본 스타일 */
+    :global(body) {
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        color: #1a1a1a;
+        margin: 0;
+        padding: 0;
+    }
 
-<!-- {#each departmentRank as item}
-    <li>
-        학과: {item.department} 
-    </li>
-{/each} -->
+    /* 컨테이너 */
+    .container {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
 
-<style lang="postcss">
-    :global(html) {
-        background-color: theme(colors.gray.100);
+    /* 헤더 */
+    h1 {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
+        color: #1a1a1a;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 1rem;
+        color: #2a2a2a;
+    }
+
+    /* 차트 레이아웃 */
+    .chart-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 600px), 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .chart {
+        border-radius: 12px;
+        padding: 1.5rem;
+        background: transparent;
+        transition: transform 0.2s ease;
+    }
+
+    .chart:hover {
+        transform: translateY(-2px);
+    }
+
+    .responsive-svg-container {
+        width: 100%;
+        height: auto;
+        min-height: 400px;
+    }
+
+    /* 미디어 쿼리 */
+    @media (max-width: 768px) {
+        .container {
+            padding: 1rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        .chart {
+            padding: 1rem;
+        }
+
+        .responsive-svg-container {
+            min-height: 300px;
+        }
     }
 </style>
+
+<section class="w-full">
+    <main class="container">
+        <h1>경상대 교원현황</h1>
+        <div class="chart-container">
+            <div class="chart">
+                <h2>학과(부)별 교원수</h2>
+                <div class="responsive-svg-container">
+                    <DepartmentPositionBarChart {departmentPosition} />
+                </div>
+            </div>
+            <div class="chart">
+                <h2>직급별 전임교원수</h2>
+                <div class="responsive-svg-container">
+                    <DepartmentRankArcChart {departmentRank} />
+                </div>
+            </div>
+        </div>
+    </main>
+</section>

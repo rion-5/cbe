@@ -64,6 +64,7 @@
 		background-color: #f0f0f0;
 	}
 	.login-box {
+		margin-top: -400px;
 		background: #fff;
 		padding: 2rem;
 		border-radius: 8px;
