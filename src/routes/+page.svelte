@@ -69,7 +69,8 @@
             <div class="section">
                 <h2>기술 스택</h2>
                 <ul>
-                    <li>운영체제: Ubuntu, Nginx</li>
+                    <li>운영체제: Ubuntu</li>
+                    <li>웹서버: Nginx</li>
                     <li>Frontend: Svelte, TypeScript</li>
                     <li>Backend: Spring Boot, Python</li>
                     <li>Database: PostgreSQL</li>
